@@ -22,6 +22,14 @@ public class Interchange {
 	@Column
 	private int score;
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
 	public Farmer getFarmerReceptor() {
 		return farmerReceptor;
 	}
