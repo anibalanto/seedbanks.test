@@ -1,48 +1,70 @@
 <!doctype html>
 <html ng-app="sb">
 	<head>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<title>Hello SeedBank</title>
 		<script src="angular.min.js"></script>
     	<script src="seedbanks.js"></script>
+   	    <script type="text/javascript" src="angular-resource.min.js"></script>
 	</head>
 
 	<body>
-	Buscar cosechas por ID de Farmer:
-	<form name="findHarvest" >
-		<input type="text">
-		<input type="submit" value="Buscar">
-	</form>
-		<!-- CU 1. Harvest Repo: Find Harvest by Farmer ID -->
-	
-		<h3>Las variedades</h3>
-		<div ng-controller="VarietyController as v">
-			<ul>
-				<li ng-repeat="variedad in v.variedades">
-					Name: {{variedad.name}}
-				</li>
-			</ul>
-		</div>
+	<div class="container">
+		<div class="starter-template">
+		<h1>Banco de Semillas</h1>
 		
-		<div ng-controller="HarvestController as stock">
-			<ul>
-				<li ng-repeat="h in stock.cosechas">
-					Name: {{h.date}}
-				</li>
-			</ul>
+		
+		Buscar cosechas por ID de Farmer:
+		<form name="findHarvest" ng-submit="">
+			<input type="text">
+			<input type="submit" value="Buscar">
+		</form>
+		
+			<!-- CU 1. Harvest Repo: Find Harvest by Farmer ID -->
+	
+			<h3>Variedades</h3>
+			<div ng-controller="VarietyController as VCtrl">
+				<ul>
+					<li ng-repeat="variedad in VCtrl.variedades">
+						<a href="{{variedad._links['self']['href']}}">{{variedad.name}}</a>
+					</li>
+				</ul>
+			</div>
+
+			<!--
+			<h3>Cosechas</h3>
+			<div ng-controller="HarvestResCtrl as HCtrl">
+				<ul>
+					<li ng-repeat="h in HCtrl.harvests">
+						Name: {{h.date}}
+					</li>
+				</ul>
+			</div>
+			-->
+
+			<h3>Pruebas con Angular.js</h3>
+			<div ng-controller="TestCtrl as test">
+				<p>  Gema: {{test.objetos[0].price}}</p>
+			</div>
+		
+			<p>Version: {{angular.version.full}}</p>
+		
+			<!--
+			<h3>Las variedades 2</h3>
+			<div ng-controller="Variety">
+				<div ng-repeat="v in varieties">
+					<p>Name: {{v.name}}. Link is <a ng-href="">{{v["_links"]["self"]["href"]}}</a></p>
+				</div>	
+			</div>		
+			-->
 		</div>
 
-		<h3>Pruebas con Angular.js</h3>
-		<div ng-controller="TestCtrl as test">
-			<p>  Gema: {{test.objetos[0].price}}</p>
 		</div>
-		
-		<!--
-		<h3>Las variedades 2</h3>
-		<div ng-controller="Variety">
-			<div ng-repeat="v in varieties">
-				<p>Name: {{v.name}}. Link is <a ng-href="">{{v["_links"]["self"]["href"]}}</a></p>
-			</div>	
-		</div>		
-		-->
 	</body>
 </html>

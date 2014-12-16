@@ -1,23 +1,26 @@
 (function() {
 
-	var sb = angular.module('sb', []);
+	var sb = angular.module('sb', ['ngResource']);
+	
+	var host = '192.168.1.34';
+	var fullhost = 'http://'+host+':8080';
 	
 	sb.controller('VarietyController', ['$http', function($http) {
 		bank = this;
 		bank.variedades = [];
-		$http.get('http://localhost:8080/variety').success(function(data){
+		$http.get(fullhost+'/variety').success(function(data){
 			bank.variedades = data["_embedded"]["variety"];
 		});
 		
 	}]);
 	
-	
-	// Ver
+	/*/ Ver
 	sb.controller('HarvestController', ['$http', function($http) {
+		
 		this.allHarvest = function(){
 			bank = this;
 			bank.harvests = [];
-			$http.get('http://localhost:8080/harvest').success(function(data){
+			$http.get(fullhost+'/harvest').success(function(data){
 				bank.harvests = data["_embedded"]["harvest"];
 			});
 			return bank.harvests;
@@ -26,6 +29,23 @@
 		this.cosechas = this.allHarvest();
 
 	}]);
+
+	
+	// Probando RESOURCE!
+	angular.module('sb.services').factory('Harvest', function($resource) {
+		return $resource(fullhost+'/harvest/:id'); // Note the full endpoint address
+	});
+	
+	sb.controller('HarvestResCtrl', function($scope, Harvest) {
+
+		var harvests = Harvest.query(function() { 
+			console.log(harvests);
+		}); //query() returns all the entries
+	
+	});
+	
+		*/
+	
 
 
 	// Pruebas con Angular.
