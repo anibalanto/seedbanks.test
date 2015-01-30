@@ -11,6 +11,7 @@
 		<title>Hello SeedBank</title>
 		<script src="angular.min.js"></script>
     	<script src="seedbanks.js"></script>
+    	<script src="angulartest.js"></script>
    	    <script type="text/javascript" src="angular-resource.min.js"></script>
 	</head>
 
@@ -19,12 +20,19 @@
 		<div class="starter-template">
 		<h1>Banco de Semillas</h1>
 		
-		
-		Buscar cosechas por ID de Farmer:
-		<form name="findHarvest" ng-submit="">
-			<input type="text">
-			<input type="submit" value="Buscar">
-		</form>
+		<div ng-app>
+			<div ng-controller="Ctrl">
+				Buscar cosechas por ID de Farmer:
+				<form name="findHarvest" ng-submit="submit()">
+					<input type="text" ng-model="text" name="text">
+					<input type="submit" value="Buscar"><pre>list={{list}}</pre>	
+				</form>
+				<ul>
+					<li ng-repeat="item in list">{{item.codeValidator}}</li>
+					
+				<button ng-click="submit()">sub</button>
+			</div>
+		</div>
 		
 			<!-- CU 1. Harvest Repo: Find Harvest by Farmer ID -->
 	
@@ -32,7 +40,7 @@
 			<div ng-controller="VarietyController as VCtrl">
 				<ul>
 					<li ng-repeat="variedad in VCtrl.variedades">
-						<a href="{{variedad._links['self']['href']}}">{{variedad.name}}</a>
+						<a href="{{variedad._links['self']['href']}}">{{variedad._links.self}}</a>
 					</li>
 				</ul>
 			</div>
@@ -54,6 +62,9 @@
 			</div>
 		
 			<p>Version: {{angular.version.full}}</p>
+			
+			
+		
 		
 			<!--
 			<h3>Las variedades 2</h3>

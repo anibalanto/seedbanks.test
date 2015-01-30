@@ -1,15 +1,17 @@
 (function() {
 
+	
+	
 	var sb = angular.module('sb', ['ngResource']);
 	
-	var host = '192.168.1.34';
+	var host = 'localhost';
 	var fullhost = 'http://'+host+':8080';
 	
 	sb.controller('VarietyController', ['$http', function($http) {
 		bank = this;
 		bank.variedades = [];
-		$http.get(fullhost+'/variety').success(function(data){
-			bank.variedades = data["_embedded"]["variety"];
+		$http.get(fullhost+'/harvest/search/findBySharedAndVarietyNameContainingIgnoringCase?shared=0&variety=beren').success(function(data){
+			bank.variedades = data["_embedded"]["harvest"];
 		});
 		
 	}]);

@@ -1,40 +1,40 @@
 package seedbanks.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Harvest {
 	
-	@Id
-	private String uHarvestID;
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
 	
 	@Column
 	private Date date;
 	
 	@Column
-	private String harvestCodeValidator;
+	private String codeValidator = null;
 
 	@Column
 	private boolean shared;
 	
 	@ManyToOne
-	private Variety variety;
+	private Variety variety = null;
 	
 	@ManyToOne
-	private Harvest mother;
+	private Harvest mother = null;
 	
 	@ManyToOne
-	private Farmer farmer;
+	private Farmer farmer = null;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mother")
 	private Set<Harvest> children;
@@ -59,14 +59,25 @@ public class Harvest {
 		this.date = date;
 	}
 
-	public String getHarvestCodeValidator() {
-		return harvestCodeValidator;
+	public void setCodeValidator(String codeValidator){
+		this.codeValidator = codeValidator;
+	}
+	
+	public String getCodeValidator() {
+		/*if (codeValidator == null)
+			this.generateCodeValidator();*/
+		return this.generateCodeValidator();//codeValidator;
 	}
 
-	public void setHarvestCodeValidator(String harvestCodeValidator) {
-		this.harvestCodeValidator = harvestCodeValidator;
+	private String generateCodeValidator() {
+		if (this.farmer != null && this.variety != null){
+			HarvestCode harvestCode= new HarvestCode();
+			return harvestCode.getHarvestCodeValidator(this.farmer.getuFarmerID(), this.variety.getuVarietyID(), this.getMother());
+		
+		}
+		return null;
 	}
-
+	
 	public Set<Interchange> getInchanges() {
 		return inchanges;
 	}
@@ -81,6 +92,7 @@ public class Harvest {
 
 	public void setMother(Harvest mother) {
 		this.mother = mother;
+		
 	}
 
 	public Set<Harvest> getChildren() {
@@ -89,26 +101,6 @@ public class Harvest {
 
 	public void setChildren(Set<Harvest> children) {
 		this.children = children;
-	}
-	
-	/*@Column
-	private String mother;
-
-
-	public String getuHarvestIDMother() {
-		return uHarvestIDMother;
-	}
-
-	public void setuHarvestIDMother(String uHarvestIDMother) {
-		this.uHarvestIDMother = uHarvestIDMother;
-	}*/
-	
-	public String getuHarvestID() {
-		return uHarvestID;
-	}
-
-	public void setuHarvestID(String uHarvestID) {
-		this.uHarvestID = uHarvestID;
 	}
 
 	public Variety getVariety() {
@@ -126,33 +118,5 @@ public class Harvest {
 	public void setShared(boolean shared) {
 		this.shared = shared;
 	}
-	
-	//@ManyToOne
-	//private Farmer farmer;
-	
-	//@OneToMany
-	//private Set<Exchange> exchanges;
-
-	//private DataHarvestCreator dataHarvestCreator;
-	
-	/*public DataHarvestCreator getDataHarvestCreator() {
-		return dataHarvestCreator;
-	}*/
-
-	/*public void setDataHarvestCreator(DataHarvestCreator dataHarvestCreator) {
-		this.dataHarvestCreator = dataHarvestCreator;
-		HarvestCode harvestCode = new HarvestCode(dataHarvestCreator.getuFarmerID(), dataHarvestCreator.getuVarietyID(), dataHarvestCreator.getHistory());
-		this.setuHarvestID(harvestCode.getUHarvestID());
-		//this.birth = new Birth();
-		//this.birth.setDate(dataHarvestCreator.getDate());
-		//this.birth.setdataHarvestCreator.getuFarmerID(), harvestCode.getHarvestCodeValidator()
-		//history.add(new Birth(date, uFarmerID, harvestCode.getHarvestCodeValidator()));
-	}*/
-
-	/*public Harvest(String uFarmerID, String uVarietyID, ArrayList<Birth> history, Date date){
-		HarvestCode harvestCode = new HarvestCode(uFarmerID, uVarietyID, history);
-		this.uHarvestID = harvestCode.getUHarvestID();
-		history.add(new Birth(date, uFarmerID, harvestCode.getHarvestCodeValidator()));
-	}*/
 	
 }
