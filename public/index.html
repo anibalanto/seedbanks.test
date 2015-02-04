@@ -14,7 +14,7 @@
 		<script src="angular.min.js"></script>
     	<script src="seedbanks.js"></script>
     	<script src="angulartest.js"></script>
-   	    <script type="text/javascript" src="angular-resource.min.js"></script>
+   	    <script src="angular-resource.min.js"></script>
 	</head>
 
 	<body>
@@ -56,7 +56,7 @@
 			</ul>
 		</div>
 		
-
+		<!--
 		<h3>Consulta de Cosechas</h3>
 		<div ng-controller="FindHarvestCtrl as FHCtrl">
 			ID Variedad: <input type="text" ng-model="FHCtrl.idvariedad" ng-init="FHCtrl.idvariedad == 2">
@@ -66,6 +66,7 @@
 				</li>
 			</ul>
 		</div>
+		-->
 		
 		<h3>Consulta de Cosechas 2</h3>
 		<div ng-controller="FindHarvestCtrl2 as FHCtrl">
@@ -98,6 +99,15 @@
 			</ul>
 		</div>
 		-->
+		
+		<h3> Harvest Resource </h3>
+		<div ng-controller="HarvestResourceCtrl as hrc">
+			Length: {{hrc.harvests.length}}
+			TestText: {{hrc.test}}
+			<ul>
+				<li ng-repeat="h in hrc.harvests">{{h['codeValidator']}} un harvest</li>
+			</ul>
+		</div>
 
 		<h3>Pruebas con Angular.js</h3>
 		<div ng-controller="TestCtrl as test">

@@ -17,6 +17,7 @@
 	}]);
 	
 	// Buscar Harvest compartida por Variedad
+	/*
 	sb.controller('FindHarvestCtrl', ['$http', function($http) {
 		bank = this;
 		bank.cosechas = [];
@@ -26,6 +27,7 @@
 		});
 
 	}]);
+	*/
 	
 	// Buscar Harvest compartida por Variedad
 	sb.controller('FindHarvestCtrl2', ['$http', function($http) {
@@ -56,25 +58,28 @@
 		this.cosechas = this.allHarvest();
 
 	}]);
-
+		
+	*/
 	
-	// Probando RESOURCE!
-	angular.module('sb.services').factory('Harvest', function($resource) {
-		return $resource(fullhost+'/harvest/:id'); // Note the full endpoint address
+	
+	//** Desarrollo con ngResource **//
+	sb.factory('Harvest',
+		function($resource){
+			return $resource('harvest/:id', {harvestid:'@id'}, {
+				'get': {method:'GET'},
+				'query': {method:'GET', params:{id:'harvests'}, isArray:false}
+			});
 	});
-	
-	sb.controller('HarvestResCtrl', function($scope, Harvest) {
 
-		var harvests = Harvest.query(function() { 
-			console.log(harvests);
-		}); //query() returns all the entries
+	sb.controller('HarvestResourceCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
+		var ctrl = this;
+		this.queryResult = Harvest.get({},{'id': 1}, function (response) { 
+			ctrl.harvests = response['_embedded']['harvest'];
+			console.log(ctrl.harvests.toSource());
+		});
+	}]);
 	
-	});
 	
-		*/
-	
-
-
 	// Pruebas con Angular.
 	gema = [{'price': '2.20', 'name': 'oro'},{'price': '3.2', 'name': 'platino'}];	
 	sb.controller('TestCtrl', function(){
