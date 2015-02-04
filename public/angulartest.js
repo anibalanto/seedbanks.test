@@ -1,5 +1,5 @@
 function Ctrl($resource) {
-	var app = angular.module("seedbanks", ["ngResource", "hateoas"]);
+	/*var app = angular.module("seedbanks", ["ngResource", "hateoas"]);
 	
 	app.config(function (HateoasInterceptorProvider) {
 	    HateoasInterceptorProvider.transformAllResponses();
@@ -8,7 +8,11 @@ function Ctrl($resource) {
 	var item = $resource("harvest/:harvestId").get(null, function () {
 		alert(item.toSource());
 	    console.log("Here's a related $resource object: ", item.resource("variety"));
-	});
+	});*/
+	
+	
+	
+	
 
 	/*var harvestResource = $resource("/harvest/:harvestId");
 	

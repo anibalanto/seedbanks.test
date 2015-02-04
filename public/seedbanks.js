@@ -2,7 +2,12 @@
 
 	
 	
-	var sb = angular.module('sb', ['ngResource']);
+	var sb = angular.module('sb', ['ngResource', "hateoas"]);
+	
+	
+	sb.config(function (HateoasInterceptorProvider) {
+	    HateoasInterceptorProvider.transformAllResponses();
+	});
 	
 	var host = 'localhost';
 	var fullhost = 'http://'+host+':8080';
@@ -66,8 +71,8 @@
 	sb.factory('Harvest',
 		function($resource){
 			return $resource('harvest/:id', {harvestid:'@id'}, {
-				'get': {method:'GET'},
-				'query': {method:'GET', params:{id:'harvests'}, isArray:false}
+				//'get': {method:'GET'},
+				//'query': {method:'GET', params:{id:'harvests'}, isArray:false}
 			});
 	});
 
@@ -75,9 +80,20 @@
 		var ctrl = this;
 		this.queryResult = Harvest.get({},{'id': 1}, function (response) { 
 			ctrl.harvests = response['_embedded']['harvest'];
-			console.log(ctrl.harvests.toSource());
 		});
 	}]);
+	
+	
+	/*sb.controller('HarvestResourceCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
+		var ctrl = this;
+		this.queryResult = Harvest.query(null, function (response) { 
+			var firstHarvest = this.queryResult[0]; 
+			var firstHarvestVariety =  new HateoasInterface(firstHarvest).resource("variety").query(null, function () {
+				console.log(firstHarvestVariety);
+			});
+			
+		});
+	}]);*/
 	
 	
 	// Pruebas con Angular.
