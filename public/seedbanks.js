@@ -1,13 +1,16 @@
 (function() {
 
-	
-	
-	var sb = angular.module('sb', ['ngResource', "hateoas"]);
-	
+	var sb = angular.module('sb', ['ngResource', 'hateoas']);
 	
 	sb.config(function (HateoasInterceptorProvider) {
 	    HateoasInterceptorProvider.transformAllResponses();
 	});
+
+	sb.config(['$httpProvider', function($httpProvider) {
+    	$httpProvider.defaults.headers.patch = {
+        	'Content-Type': 'application/json;charset=utf-8'
+    	}
+	}])
 	
 	var host = 'localhost';
 	var fullhost = 'http://'+host+':8080';
@@ -68,38 +71,44 @@
 	
 	
 	//** Desarrollo con ngResource **//
+	// HARVEST
+	//  id (Not null), code_validator, date, shared, farmer_uFarmerID, mother_id, variety_uVarietyID 
 	sb.factory('Harvest',
 		function($resource){
-			return $resource('harvest/:id', {harvestid:'@id'}, {
-				//'get': {method:'GET'},
-				//'query': {method:'GET', params:{id:'harvests'}, isArray:false}
+
+			return $resource('harvest/:id', {id:'@id'}, {
+				//'query': {method:'GET', null, isArray:false},
+				'actualizar': {params:{id:'@id'}, method:'PATCH'}
 			});
 	});
 
 	sb.controller('HarvestResourceCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
 		var ctrl = this;
-		this.queryResult = Harvest.get({},{'id': 1}, function (response) { 
+		this.queryResult = Harvest.get(null, function (response) { 
 			ctrl.harvests = response['_embedded']['harvest'];
+			//console.log(ctrl.harvests.toSource());
 		});
 	}]);
-	
-	
-	/*sb.controller('HarvestResourceCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
-		var ctrl = this;
-		this.queryResult = Harvest.query(null, function (response) { 
-			var firstHarvest = this.queryResult[0]; 
-			var firstHarvestVariety =  new HateoasInterface(firstHarvest).resource("variety").query(null, function () {
-				console.log(firstHarvestVariety);
-			});
-			
-		});
-	}]);*/
-	
-	
-	// Pruebas con Angular.
-	gema = [{'price': '2.20', 'name': 'oro'},{'price': '3.2', 'name': 'platino'}];	
-	sb.controller('TestCtrl', function(){
-		this.objetos = gema;
-	});
+
+	sb.controller('HarvestNewResource', ['$scope', 'Harvest', function($scope, Harvest) {
+		var newHarvest = new Harvest();
+		newHarvest.farmer = 'farmer/FFAAEE44';
+		newHarvest.mother = 'harvest/4';
+		newHarvest.variety = 'variety/DAFA3555';
+		newHarvest.$save();
+	}]);
+
+	// Algo asi: curl -i -X PATCH -H "Content-Type:application/json" -d '{ "shared" : "true" }' http://localhost:8080/harvest/AABBCCEE
+	sb.controller('HarvestUpdateResource',  ['$scope', 'Harvest', function($scope, Harvest) {
+		var newHarvest = new Harvest({id: 6});
+		newHarvest.shared = 'true';
+		newHarvest.farmer = 'farmer/FFAAEE44';
+		newHarvest.$actualizar();
+	}]);
+
+	sb.controller('HarvestDeleteResource',  ['$scope', 'Harvest', function($scope, Harvest) {
+		var newHarvest = new Harvest({id: 16});
+		newHarvest.$delete();
+	}]);
 
 })();

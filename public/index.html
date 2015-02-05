@@ -107,19 +107,17 @@
 		<h3> Harvest Resource </h3>
 		<div ng-controller="HarvestResourceCtrl as hrc">
 			Length: {{hrc.harvests.length}}
-			TestText: {{hrc.test}}
 			<ul>
 				<li ng-repeat="h in hrc.harvests">{{h['codeValidator']}} un harvest</li>
-			</ul>
+			</ul>			
 		</div>
-
-		<h3>Pruebas con Angular.js</h3>
-		<div ng-controller="TestCtrl as test">
-			<p>  Gema: {{test.objetos[0].price}}</p>
-		</div>
-	
-		<p>Version: {{angular.version.full}}</p>
-	
+		<!-- CREATE --><!--
+		<div ng-controller="HarvestNewResource as hnr"></div>-->
+		<!-- UPDATE -->
+		<div ng-controller="HarvestUpdateResource"></div>
+		<!-- DELETE -->
+		<div ng-controller="HarvestDeleteResource"></div>
+		
 		<!--
 		<h3>Las variedades 2</h3>
 		<div ng-controller="Variety">
