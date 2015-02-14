@@ -66,7 +66,8 @@ public class Harvest {
 	public String getCodeValidator() {
 		/*if (codeValidator == null)
 			this.generateCodeValidator();*/
-		return this.generateCodeValidator();//codeValidator;
+		//return this.generateCodeValidator();//codeValidator;
+			return "0000001";
 	}
 
 	private String generateCodeValidator() {

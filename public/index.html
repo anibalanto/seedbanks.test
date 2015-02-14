@@ -113,7 +113,18 @@
 		<div ng-controller="HarvestUpdateResource"></div>
 		<!-- DELETE -->
 		<div ng-controller="HarvestDeleteResource"></div>
-		
+
+		<div ng-controller="newHarvestCtrl">
+			<h3>Crear Cosecha</h3>
+			<form name="newHarvestForm" ng-submit="submit()">
+				<label>Farmer </label><input type="text" ng-model="farmer" name="farmer"><br>
+				<label>Mother </label><input type="text" ng-model="mother" name="mother"><br>
+				<label>Variety </label><input type="text" ng-model="variety" name="variety"><br>
+				<label>Compartir </label><input type="checkbox" ng-model="shared" name="shared">
+				<input type="submit" value="Crear">
+			</form>
+		</div>	
+
 		<!--
 		<h3>Las variedades 2</h3>
 		<div ng-controller="Variety">

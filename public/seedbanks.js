@@ -108,4 +108,24 @@
 		newHarvest.$delete();
 	}]);
 
+	sb.controller('newHarvestCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
+
+		var newHarvest = new Harvest();
+		$scope.farmer = 'farmer/FFAAEE44';
+		$scope.mother = 'harvest/3';
+		$scope.variety = 'variety/DAFA3555';
+		$scope.shared = 'false';
+		
+		$scope.submit = function(Harvest) {
+			newHarvest.farmer = $scope.farmer; 
+			newHarvest.mother = $scope.mother;
+			newHarvest.variety = $scope.variety;
+			newHarvest.shared = $scope.shared;
+			console.log(newHarvest.toSource());
+			newHarvest.$save();
+		}
+
+	}]);
+
+
 })();
