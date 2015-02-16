@@ -84,7 +84,7 @@
 		var ctrl1 = this;
 		ctrl1.queryResult1 = HarvestByVarietyName.get({variety:'beren'}, function (response) {
 			ctrl1.harvestsByName = response['_embedded']['harvest'];
-			console.log(ctrl1.harvestsByName.toSource());
+			//console.log(ctrl1.harvestsByName.toSource());
 		});
 	}]);
 	
@@ -161,12 +161,18 @@
 	// CU 3. Crear un Interchange con datos de Farmer y Harvest. 
 	sb.controller('newInterchangeCtrl', ['$scope', 'Interchange', 'HarvestByVarietyName', function($scope, Interchange, HarvestByVarietyName) {
 		
-		$scope.variety = "zana";
 		var ctrl1 = this;
-		ctrl1.queryResult1 = HarvestByVarietyName.get({variety:$scope.variety}, function (response) {
-			ctrl1.harvestsByName = response['_embedded']['harvest'];
-			console.log("HarvestByVarietyName: " + ctrl1.harvestsByName.toSource());
-		});
+		var variety = '';
+		var getHarvests = function() {
+			variety = $scope.variety;
+			console.log("variety: " + $scope.variety.toSource());
+
+			ctrl1.queryResult1 = HarvestByVarietyName.get({variety:$scope.variety}, function (response) {
+				ctrl1.harvestsByName = response['_embedded']['harvest'];
+				console.log("HarvestByVarietyName: " + ctrl1.harvestsByName.toSource());
+			});
+
+		}
 		
 		// Interchange main columns: farmer_receptor_uFarmerID, score, harvest_id
 		var newInter = new Interchange();
@@ -178,8 +184,6 @@
 			newInter.farmerReceptor = $scope.farmerReceptor;
 			newInter.harvest = $scope.harvest;
 			newInter.score = $scope.score;
-			console.log(newInter.toSource());
-			console.log("$scope.harvest:" + $scope.harvest.toSource());
 
 			newInter.$save();	
 		}
