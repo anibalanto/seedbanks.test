@@ -136,17 +136,25 @@
 
 		<div ng-controller="newInterchangeCtrl">
 			<h3>Intercambiar semillas de cosecha</h3>
-			<form name="newHarvestForm" ng-submit="submit()">
-				<label>Harvest</label><input type="text" ng-model="harvest" name="harvest">
-				<select name="harvestselect" ng-controller="HarvestResourceCtrl as hrc">
-					<option ng-repeat="h in hrc.harvests" value="">{{h['_links']['self']['href']}}</option>				
-				</select>
-				<br>
+			<form name="newHarvestForm" ng-submit="submit()" id="newinterchangeform">
+				<label>Harvest</label>
+					<select name="harvest2" ng-model="harvest" form="newinterchangeform" ng-controller="HarvestByVarietyNameResource as hvrc">
+						<option ng-repeat="h in hvrc.harvestsByName" value="{{h['_links']['self']['href']}}">{{h['_links']['self']['href']}}</option>
+					</select>
 
-				<label>Farmer receptor</label><input type="text" ng-model="farmerReceptor" name="farmerReceptor">
+					<select name="harvest" ng-model="harvest" form="newinterchangeform">
+						<option value="http://localhost:8080/harvest/5">harvest 5</option>
+						<option value="http://localhost:8080/harvest/34">harvest 34</option>
+						<option value="http://localhost:8080/harvest/37">harvest 37</option>
+					</select>
+					<br>
+				<label>Farmer receptor</label>
+					<input type="text" ng-model="farmerReceptor" name="farmerReceptor">
+				<!--
 				<select name="farmers" ng-controller="FarmerCtrl">
 					<option ng-repeat="f in FarmerCtrl.farmers" value="">{{f['_links']['self']['href']}}</option>
 				</select>
+				-->
 				<br>
 				
 				<label>Score</label><input type="text" ng-model="score" name="score"><br>

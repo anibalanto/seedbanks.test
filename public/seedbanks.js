@@ -82,7 +82,7 @@
 	
 	sb.controller('HarvestByVarietyNameResource', ['$scope', 'HarvestByVarietyName', function($scope, HarvestByVarietyName) {
 		var ctrl1 = this;
-		ctrl1.queryResult1 = HarvestByVarietyName.get({variety:"beren"}, function (response) {
+		ctrl1.queryResult1 = HarvestByVarietyName.get({variety:'beren'}, function (response) {
 			ctrl1.harvestsByName = response['_embedded']['harvest'];
 			console.log(ctrl1.harvestsByName.toSource());
 		});
@@ -169,17 +169,18 @@
 	sb.controller('newInterchangeCtrl', ['$scope', 'Interchange', function($scope, Interchange) {
 		
 		// Interchange main columns: farmer_receptor_uFarmerID, score, harvest_id
-	
 		var newInter = new Interchange();
 		$scope.farmerReceptor = 'farmer/FFAAEE44';
-		$scope.harvest = 'harvest/3';
+		//$scope.harvest = 'http://localhost:8080/harvest/3';
 		$scope.score = '10';
-		
+
 		$scope.submit = function(Harvest) {
 			newInter.farmerReceptor = $scope.farmerReceptor;
 			newInter.harvest = $scope.harvest;
 			newInter.score = $scope.score;
 			console.log(newInter.toSource());
+			console.log("$scope.harvest:" + $scope.harvest.toSource());
+
 			newInter.$save();
 		}
 	}]);
