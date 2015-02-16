@@ -49,6 +49,7 @@ function Ctrl($scope, $http, $q) {
 	var sb = angular.module('sb', ['ngResource']);
     $scope.list = [];
     $scope.text = '';
+>>>>>>> d9957c00cf6a2c594a09331e92cf7fd71784d720
     $scope.submit = function () {
         if ($scope.text) {
     		$http.get('http://localhost:8080/harvest/search/findBySharedAndVarietyNameContainingIgnoringCase?shared=0&variety='+$scope.text).success(function(data){
