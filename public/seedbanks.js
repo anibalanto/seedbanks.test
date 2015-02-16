@@ -152,8 +152,23 @@
 			console.log(newInter.toSource());
 			newInter.$save();
 		}
+	}]);
 
-	}])
+	sb.factory('Farmer',
+		function($resource){
+			return $resource('farmer/:id', {id:'@id'}, {
+				//'query': {method:'GET', null, isArray:false},
+				'actualizar': {params:{id:'@id'}, method:'PATCH'}
+			});
+	});
+
+	sb.controller('FarmerCtrl', ['$scope', 'Farmer', function($scope, Farmer) {
+		var ctrl = this;
+		this.queryResult = Farmer.get(null, function (response) { 
+			ctrl.farmers = response['_embedded']['farmer'];
+			//console.log(ctrl.harvests.toSource());
+		});
+	}]);
 
 
 

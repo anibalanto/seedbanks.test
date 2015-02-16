@@ -128,9 +128,20 @@
 		<div ng-controller="newInterchangeCtrl">
 			<h3>Intercambiar semillas de cosecha</h3>
 			<form name="newHarvestForm" ng-submit="submit()">
-				<label>Harvest</label><input type="text" ng-model="harvest" name="harvest"><br>
-				<label>Farmer receptor</label><input type="text" ng-model="farmerReceptor" name="farmerReceptor"><br>
+				<label>Harvest</label><input type="text" ng-model="harvest" name="harvest">
+				<select name="harvestselect" ng-controller="HarvestResourceCtrl as hrc">
+					<option ng-repeat="h in hrc.harvests" value="">{{h['_links']['self']['href']}}</option>				
+				</select>
+				<br>
+
+				<label>Farmer receptor</label><input type="text" ng-model="farmerReceptor" name="farmerReceptor">
+				<select name="farmers" ng-controller="FarmerCtrl">
+					<option ng-repeat="f in FarmerCtrl.farmers" value="">{{f['_links']['self']['href']}}</option>
+				</select>
+				<br>
+				
 				<label>Score</label><input type="text" ng-model="score" name="score"><br>
+				
 				<input type="submit" value="Intercambiar">
 			</form>
 		</div>
