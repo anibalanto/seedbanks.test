@@ -42,16 +42,34 @@ public class Harvest {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "harvest")
 	private Set<Interchange> inchanges;
 	
-
-	
-	
-	
 	public Farmer getFarmer() {
 		return farmer;
 	}
 
+	private void evaluateChangeCodeValidator(String lastValue, String newValue){
+		if(lastValue != newValue){	
+			this.setCodeValidator(this.generateCodeValidator());
+		}
+	}
+	
 	public void setFarmer(Farmer farmer) {
+		/*String lastuFarmerID = "";
+		if(this.farmer != null)
+			lastuFarmerID = this.farmer.getuFarmerID();*/
 		this.farmer = farmer;
+		//this.evaluateChangeCodeValidator(lastuFarmerID, this.farmer.getuFarmerID());
+	}
+	
+	public Variety getVariety() {
+		return variety;
+	}
+
+	public void setVariety(Variety variety) {
+		/*String lastuVarietyID = "";
+		if(this.variety == null)
+			lastuVarietyID = this.variety.getuVarietyID();*/
+		this.variety = variety;
+		//this.evaluateChangeCodeValidator(lastuVarietyID, this.variety.getuVarietyID());
 	}
 
 	public Date getDate() {
@@ -67,19 +85,18 @@ public class Harvest {
 	}
 	
 	public String getCodeValidator() {
-		/*if (codeValidator == null)
-			this.generateCodeValidator();*/
-		//return this.generateCodeValidator();//codeValidator;
-			return "0000001";
+		return this.generateCodeValidator();
 	}
 
 	private String generateCodeValidator() {
 		if (this.farmer != null && this.variety != null){
-			HarvestCode harvestCode= new HarvestCode();
-			return harvestCode.getHarvestCodeValidator(this.farmer.getuFarmerID(), this.variety.getuVarietyID(), this.getMother());
-		
+			if (this.farmer.getuFarmerID() != null && this.variety.getuVarietyID() != null){
+				HarvestCode harvestCode= new HarvestCode();
+				return harvestCode.getHarvestCodeValidator(this.farmer.getuFarmerID(), this.variety.getuVarietyID(), this.getMother());
+			}
+			return "-00002(error!)";
 		}
-		return null;
+		return "-00001(error!)";
 	}
 	
 	public Set<Interchange> getInchanges() {
@@ -105,14 +122,6 @@ public class Harvest {
 
 	public void setChildren(Set<Harvest> children) {
 		this.children = children;
-	}
-
-	public Variety getVariety() {
-		return variety;
-	}
-
-	public void setVariety(Variety variety) {
-		this.variety = variety;
 	}
 	
 	public boolean isShared() {
