@@ -1,6 +1,21 @@
 (function() {
-
+	
+	
 	var sb = angular.module('sb', ['ngResource']);
+	
+	sb.directive('autoComplete', function($timeout) {
+	    return function(scope, iElement, iAttrs) {
+	    	//console.log(iElement.toSource());
+            iElement.autocomplete({
+                source: scope[iAttrs.uiItems],
+                select: function() {
+                    $timeout(function() {
+                      iElement.trigger('input');
+                    }, 0);
+                }
+            });
+	    };
+	});
 	
 	/*sb.config(function (HateoasInterceptorProvider) {
 	    HateoasInterceptorProvider.transformAllResponses();
@@ -80,14 +95,6 @@
 				});
 	});
 	
-	sb.controller('HarvestByVarietyNameResource', ['$scope', 'HarvestByVarietyName', function($scope, HarvestByVarietyName) {
-		var ctrl1 = this;
-		ctrl1.queryResult1 = HarvestByVarietyName.get({variety:'beren'}, function (response) {
-			ctrl1.harvestsByName = response['_embedded']['harvest'];
-			console.log(ctrl1.harvestsByName.toSource());
-		});
-	}]);
-	
 	
 	sb.factory('Harvest',
 		function($resource){
@@ -98,7 +105,12 @@
 			});
 	});
 	
-		
+	sb.factory('Variety',
+			function($resource){
+				return $resource(':url', {url:'@url'}, {
+				});
+		});
+	
 	sb.controller('HarvestResourceCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
 		var ctrl = this;
 		this.queryResult = Harvest.get(null, function (response) { 
@@ -168,14 +180,30 @@
 	});
 
 	// CU 3. Crear un Interchange con datos de Farmer y Harvest. 
-	sb.controller('newInterchangeCtrl', ['$scope', 'Interchange', 'HarvestByVarietyName', function($scope, Interchange, HarvestByVarietyName) {
+	sb.controller('newInterchangeCtrl', ['$http', '$scope', 'Interchange', 'HarvestByVarietyName', 'Variety', function($http, $scope, Interchange, HarvestByVarietyName, Variety) {
 		
-		$scope.variety = "zana";
+		$scope.variety = "ber";
+		
 		
 		var ctrl2 = this
-		$scope.varietyChange = function() {;
+		$scope.varietyChange = function() {
 			ctrl2.queryResult1 = HarvestByVarietyName.get({variety:$scope.variety}, function (response) {
 				ctrl2.harvestsByName = response['_embedded']['harvest'];
+				for(harvItem of ctrl2.harvestsByName){
+					variety = harvItem['_links']['variety'];
+					console.log("url: " + variety.toSource());
+					variety.name = "berenjena2";
+					$http.get(variety['href']).success(function(data){
+						
+						name = data['name']
+						console.log("varietyName: " + name);
+						variety.name = name;
+						console.log("variety: " + variety.toSource());
+						console.log("harvestItem: " + harvItem.toSource());
+						
+					});
+					console.log("harvests: " + ctrl2.harvestsByName.toSource());
+				}
 			});
 		}
 
@@ -216,7 +244,10 @@
 			//console.log(ctrl.harvests.toSource());
 		});
 	}]);
-
-
-
+	
+	
+	sb.controller('DefaultCtrl', ['$scope', function($scope) {
+		$scope.names = ["john", "bill", "charlie", "robert", "alban", "oscar", "marie", "celine", "brad", "drew", "rebecca", "michel", "francis", "jean", "paul", "pierre", "nicolas", "alfred", "gerard", "louis", "albert", "edouard", "benoit", "guillaume", "nicolas", "joseph"];
+	}]);
+	
 })();

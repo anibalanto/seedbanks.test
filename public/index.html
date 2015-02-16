@@ -107,14 +107,6 @@
 			</ul>			
 		</div>
 		
-		<h3> Harvest By Variety Name Resource </h3>
-		<div ng-controller="HarvestByVarietyNameResource as hvrc">
-			Length: {{hvrc.harvestsByName.length}}
-			<ul>
-				<li ng-repeat="h in hvrc.harvestsByName">{{h['_links']['self']}} un harvest</li>
-			</ul>			
-		</div>
-		
 		
 		<!-- CREATE --><!--
 		<div ng-controller="HarvestNewResource as hnr"></div>-->
@@ -137,10 +129,10 @@
 		<div ng-controller="newInterchangeCtrl as nic">
 			<h3>Intercambiar semillas de cosecha</h3>
 			<form name="newHarvestForm" ng-submit="submit()" id="newinterchangeform">
-				<input type="text" ng-model="variety" name="variety"/>
+				<input type="text" ng-model="variety" name="variety" ng-change="varietyChange()"/>
 				<label>Harvest</label>
 					<select name="harvest" ng-model="harvest" form="newinterchangeform">
-						<option ng-repeat="h in nic.harvestsByName" value="{{h['_links']['self']['href']}}">{{h['_links']['self']['href']}}</option>
+						<option ng-repeat="h in nic.harvestsByName" value="{{h['_links']['self']['href']}}">{{h['_links']['variety']['name']}}</option>
 					</select>
 
 					<br>
@@ -158,6 +150,12 @@
 				<input type="submit" value="Intercambiar">
 			</form>
 		</div>
+
+
+	    <div ng-controller='DefaultCtrl'>
+	        <input auto-complete ui-items="names" ng-model="selected">
+	        selected = {{selected}}
+	    </div>
 
 		<!--
 		<h3>Las variedades 2</h3>
