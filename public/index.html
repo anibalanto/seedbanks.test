@@ -123,12 +123,16 @@
 		<!-- DELETE -->
 		<div ng-controller="HarvestDeleteResource"></div>
 
-		<div ng-controller="newHarvestCtrl">
+		<div ng-controller="newHarvestCtrl as nhc">
 			<h3>Crear Cosecha</h3>
 			<form name="newHarvestForm" ng-submit="submit()">
 				<label>Farmer </label><input type="text" ng-model="farmer" name="farmer"><br>
 				<label>Mother </label><input type="text" ng-model="mother" name="mother"><br>
-				<label>Variety </label><input type="text" ng-model="variety" name="variety"><br>
+				<label>Variety </label>
+				<select ng-model="variety" name="variety">
+					<option ng-repeat="v in nhc.varieties" value="{{v['_links']['self']['href']}}">{{v['name']}}</option>
+				</select>
+				<!--<input type="text" ng-model="variety" name="variety"><br>-->
 				<label>Compartir </label><input type="checkbox" ng-model="shared" name="shared">
 				<input type="submit" value="Crear">
 			</form>
@@ -136,7 +140,7 @@
 
 		<div ng-controller="newInterchangeCtrl as nic">
 			<h3>Intercambiar semillas de cosecha</h3>
-			<form name="newHarvestForm" ng-submit="submit()" id="newinterchangeform">
+			<form name="newInterchangeForm" ng-submit="submit()" id="newinterchangeform">
 				<input type="text" ng-model="variety" name="variety"/>
 				<label>Harvest</label>
 					<select name="harvest" ng-model="harvest" form="newinterchangeform">

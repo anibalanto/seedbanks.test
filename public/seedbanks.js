@@ -88,7 +88,12 @@
 		});
 	}]);
 	
-	
+	sb.factory('Variety',
+		function($resource){
+			return $resource('variety/:id', {id:'@id'}, {
+			});
+	});
+
 	sb.factory('Harvest',
 		function($resource){
 
@@ -129,9 +134,12 @@
 	}]);
 	
 
-	sb.controller('newHarvestCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
+	sb.controller('newHarvestCtrl', ['$scope', 'Harvest', 'Variety', function($scope, Harvest, Variety) {
 		
-		
+		var bank = this;
+		this.queryResult = Variety.get(null, function (response) { 
+			bank.varieties = response['_embedded']['variety'];			
+		});
 
 		var newHarvest = new Harvest();
 		$scope.farmer = 'farmer/FFAAEE44';
@@ -161,7 +169,7 @@
 	// CU 3. Crear un Interchange con datos de Farmer y Harvest. 
 	sb.controller('newInterchangeCtrl', ['$scope', 'Interchange', 'HarvestByVarietyName', function($scope, Interchange, HarvestByVarietyName) {
 		
-		$scope.variety = "zana";
+		$scope.variety = "b";
 		
 		var ctrl2 = this
 		$scope.varietyChange = function() {;
