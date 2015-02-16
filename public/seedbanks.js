@@ -117,7 +117,7 @@
 		$scope.shared = 'false';
 		
 		$scope.submit = function(Harvest) {
-			newHarvest.farmer = $scope.farmer; 
+			newHarvest.farmer = $scope.farmer;
 			newHarvest.mother = $scope.mother;
 			newHarvest.variety = $scope.variety;
 			newHarvest.shared = $scope.shared;
@@ -126,6 +126,35 @@
 		}
 
 	}]);
+
+	sb.factory('Interchange',
+		function($resource){
+			return $resource('interchange/:id', {id:'@id'}, {
+				//'query': {method:'GET', null, isArray:false},
+				'actualizar': {params:{id:'@id'}, method:'PATCH'}
+			});
+	});
+
+	// CU 3. Crear un Interchange con datos de Farmer y Harvest. 
+	sb.controller('newInterchangeCtrl', ['$scope', 'Interchange', function($scope, Interchange) {
+		
+		// Interchange main columns: farmer_receptor_uFarmerID, score, harvest_id
+	
+		var newInter = new Interchange();
+		$scope.farmerReceptor = 'farmer/FFAAEE44';
+		$scope.harvest = 'harvest/3';
+		$scope.score = '10';
+		
+		$scope.submit = function(Harvest) {
+			newInter.farmerReceptor = $scope.farmerReceptor;
+			newInter.harvest = $scope.harvest;
+			newInter.score = $scope.score;
+			console.log(newInter.toSource());
+			newInter.$save();
+		}
+
+	}])
+
 
 
 })();

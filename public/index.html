@@ -125,6 +125,16 @@
 			</form>
 		</div>	
 
+		<div ng-controller="newInterchangeCtrl">
+			<h3>Intercambiar semillas de cosecha</h3>
+			<form name="newHarvestForm" ng-submit="submit()">
+				<label>Harvest</label><input type="text" ng-model="harvest" name="harvest"><br>
+				<label>Farmer receptor</label><input type="text" ng-model="farmerReceptor" name="farmerReceptor"><br>
+				<label>Score</label><input type="text" ng-model="score" name="score"><br>
+				<input type="submit" value="Intercambiar">
+			</form>
+		</div>
+
 		<!--
 		<h3>Las variedades 2</h3>
 		<div ng-controller="Variety">
