@@ -129,15 +129,6 @@
 	}]);
 	
 
-	
-	
-	
-	/*sb.controller('HarvestByVarietyNameResource2',  ['$scope', 'HarvestByVarieytName', function($scope, HarvestByVarieytName) {
-		var newHarvest = new HarvestByVarieytName({variety: 'beren'});
-		console(newHarv)
-	}]);*/
-
-
 	sb.controller('newHarvestCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
 
 		var newHarvest = new Harvest();
@@ -181,7 +172,7 @@
 			console.log(newInter.toSource());
 			console.log("$scope.harvest:" + $scope.harvest.toSource());
 
-			newInter.$save();
+			newInter.$save();	
 		}
 	}]);
 
