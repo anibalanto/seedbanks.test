@@ -1,10 +1,10 @@
 (function() {
 
-	var sb = angular.module('sb', ['ngResource', 'hateoas']);
+	var sb = angular.module('sb', ['ngResource']);
 	
-	sb.config(function (HateoasInterceptorProvider) {
+	/*sb.config(function (HateoasInterceptorProvider) {
 	    HateoasInterceptorProvider.transformAllResponses();
-	});
+	});*/
 
 	sb.config(['$httpProvider', function($httpProvider) {
     	$httpProvider.defaults.headers.patch = {
@@ -72,7 +72,23 @@
 	
 	//** Desarrollo con ngResource **//
 	// HARVEST
-	//  id (Not null), code_validator, date, shared, farmer_uFarmerID, mother_id, variety_uVarietyID 
+	//  id (Not null), code_validator, date, shared, farmer_uFarmerID, mother_id, variety_uVarietyID
+	
+	sb.factory('HarvestByVarietyName',
+			function($resource){
+				return $resource('harvest/search/:verb', {verb:'findBySharedAndVarietyNameContainingIgnoringCase', variety:'@variety', shared:'1'}, {
+				});
+	});
+	
+	sb.controller('HarvestByVarietyNameResource', ['$scope', 'HarvestByVarietyName', function($scope, HarvestByVarietyName) {
+		var ctrl1 = this;
+		ctrl1.queryResult1 = HarvestByVarietyName.get({variety:"beren"}, function (response) {
+			ctrl1.harvestsByName = response['_embedded']['harvest'];
+			console.log(ctrl1.harvestsByName.toSource());
+		});
+	}]);
+	
+	
 	sb.factory('Harvest',
 		function($resource){
 
@@ -81,7 +97,8 @@
 				'actualizar': {params:{id:'@id'}, method:'PATCH'}
 			});
 	});
-
+	
+		
 	sb.controller('HarvestResourceCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
 		var ctrl = this;
 		this.queryResult = Harvest.get(null, function (response) { 
@@ -100,15 +117,25 @@
 
 	// Algo asi: curl -i -X PATCH -H "Content-Type:application/json" -d '{ "shared" : "true" }' http://localhost:8080/harvest/AABBCCEE
 	sb.controller('HarvestUpdateResource',  ['$scope', 'Harvest', function($scope, Harvest) {
-		var newHarvest = new Harvest({id: 6});
+		var newHarvest = new Harvest({id: 5});
 		newHarvest.shared = 'true';
 		newHarvest.farmer = 'farmer/FFAAEE44';
 		newHarvest.$actualizar();
 	}]);
 
 	sb.controller('HarvestDeleteResource',  ['$scope', 'Harvest', function($scope, Harvest) {
-		var newHarvest = new Harvest({id: 16});
+		var newHarvest = new Harvest({id: 3});
 		newHarvest.$delete();
 	}]);
+	
+
+	
+	
+	
+	/*sb.controller('HarvestByVarietyNameResource2',  ['$scope', 'HarvestByVarieytName', function($scope, HarvestByVarieytName) {
+		var newHarvest = new HarvestByVarieytName({variety: 'beren'});
+		console(newHarv)
+	}]);*/
+
 
 })();

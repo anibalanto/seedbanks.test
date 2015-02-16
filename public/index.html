@@ -13,7 +13,7 @@
 		<title>Hello SeedBank</title>
 		<script src="angular.min.js"></script>
     	<script src="seedbanks.js"></script>
-    	<script src="angulartest.js"></script>
+    	<!--script src="angulartest.js"></script-->
    	    <script type="text/javascript" src="angular-resource.min.js"></script>
    	    <script type="text/javascript" src="angular-hateoas.js"></script>
 	</head>
@@ -23,8 +23,7 @@
 		<div class="starter-template">
 		<h1>Banco de Semillas</h1>
 		
-		<div ng-app>
-			<div ng-controller="Ctrl">
+			<!--div ng-controller="Ctrl">
 				Buscar cosechas por ID de Farmer:
 				<form name="findHarvest" ng-submit="submit()">
 					<input type="text" ng-model="text" name="text">
@@ -32,13 +31,9 @@
 				</form>
 				<ul>
 					<li ng-repeat="item in list">({{item}})</li>
-				</ul>
-				<!--ul>
-					<li ng-repeat="item in varietyNames">({{item}})</li>
-				</ul-->					
+				</ul>					
 				<button ng-click="submit()">sub</button>
-			</div>
-		</div>
+			</div-->
 		
 			<!-- CU 1. Harvest Repo: Find Harvest by Farmer ID -->
 	
@@ -111,6 +106,16 @@
 				<li ng-repeat="h in hrc.harvests">{{h['codeValidator']}} un harvest</li>
 			</ul>			
 		</div>
+		
+		<h3> Harvest By Variety Name Resource </h3>
+		<div ng-controller="HarvestByVarietyNameResource as hvrc">
+			Length: {{hvrc.harvestsByName.length}}
+			<ul>
+				<li ng-repeat="h in hvrc.harvestsByName">{{h['_links']['self']}} un harvest</li>
+			</ul>			
+		</div>
+		
+		
 		<!-- CREATE --><!--
 		<div ng-controller="HarvestNewResource as hnr"></div>-->
 		<!-- UPDATE -->
