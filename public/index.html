@@ -134,19 +134,15 @@
 			</form>
 		</div>	
 
-		<div ng-controller="newInterchangeCtrl">
+		<div ng-controller="newInterchangeCtrl as nic">
 			<h3>Intercambiar semillas de cosecha</h3>
 			<form name="newHarvestForm" ng-submit="submit()" id="newinterchangeform">
+				<input type="text" ng-model="variety" name="variety"/>
 				<label>Harvest</label>
-					<select name="harvest2" ng-model="harvest" form="newinterchangeform" ng-controller="HarvestByVarietyNameResource as hvrc">
-						<option ng-repeat="h in hvrc.harvestsByName" value="{{h['_links']['self']['href']}}">{{h['_links']['self']['href']}}</option>
+					<select name="harvest" ng-model="harvest" form="newinterchangeform">
+						<option ng-repeat="h in nic.harvestsByName" value="{{h['_links']['self']['href']}}">{{h['_links']['self']['href']}}</option>
 					</select>
 
-					<select name="harvest" ng-model="harvest" form="newinterchangeform">
-						<option value="http://localhost:8080/harvest/5">harvest 5</option>
-						<option value="http://localhost:8080/harvest/34">harvest 34</option>
-						<option value="http://localhost:8080/harvest/37">harvest 37</option>
-					</select>
 					<br>
 				<label>Farmer receptor</label>
 					<input type="text" ng-model="farmerReceptor" name="farmerReceptor">

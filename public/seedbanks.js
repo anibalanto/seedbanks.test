@@ -139,6 +139,8 @@
 
 
 	sb.controller('newHarvestCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
+		
+		
 
 		var newHarvest = new Harvest();
 		$scope.farmer = 'farmer/FFAAEE44';
@@ -166,7 +168,14 @@
 	});
 
 	// CU 3. Crear un Interchange con datos de Farmer y Harvest. 
-	sb.controller('newInterchangeCtrl', ['$scope', 'Interchange', function($scope, Interchange) {
+	sb.controller('newInterchangeCtrl', ['$scope', 'Interchange', 'HarvestByVarietyName', function($scope, Interchange, HarvestByVarietyName) {
+		
+		$scope.variety = "zana";
+		var ctrl1 = this;
+		ctrl1.queryResult1 = HarvestByVarietyName.get({variety:$scope.variety}, function (response) {
+			ctrl1.harvestsByName = response['_embedded']['harvest'];
+			console.log("HarvestByVarietyName: " + ctrl1.harvestsByName.toSource());
+		});
 		
 		// Interchange main columns: farmer_receptor_uFarmerID, score, harvest_id
 		var newInter = new Interchange();
