@@ -7,6 +7,8 @@
 		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 		<!-- Optional theme -->
 		<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+		<!--<link rel="styleSheet" href="ui-grid/release/ui-grid-unstable.css"/>-->
+
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -16,6 +18,8 @@
     	<!--script src="angulartest.js"></script-->
    	    <script type="text/javascript" src="angular-resource.min.js"></script>
    	    <script type="text/javascript" src="angular-hateoas.js"></script>
+
+    	<!--<script src="ui-grid/release/ui-grid-stable.js"></script>-->
 	</head>
 
 	<body>
@@ -101,10 +105,7 @@
 		
 		<h3> Harvest Resource </h3>
 		<div ng-controller="HarvestResourceCtrl as hrc">
-			Length: {{hrc.harvests.length}}
-			<ul>
-				<li ng-repeat="h in hrc.harvests">{{h['codeValidator']}} un harvest</li>
-			</ul>			
+			<!--<div ui-grid="{ data: hrc.harvests }" class="myGrid"></div>-->
 		</div>
 		
 		
@@ -112,8 +113,8 @@
 		<div ng-controller="HarvestNewResource as hnr"></div>-->
 		<!-- UPDATE -->
 		<div ng-controller="HarvestUpdateResource"></div>
-		<!-- DELETE -->
-		<div ng-controller="HarvestDeleteResource"></div>
+		<!-- DELETE 
+		<div ng-controller="HarvestDeleteResource"></div>-->
 
 		<div ng-controller="newHarvestCtrl as nhc">
 			<h3>Crear Cosecha</h3>
@@ -133,9 +134,9 @@
 		<div ng-controller="newInterchangeCtrl as nic">
 			<h3>Intercambiar semillas de cosecha</h3>
 			<form name="newInterchangeForm" ng-submit="submit()" id="newinterchangeform">
-				<input type="text" ng-model="variety" name="variety"/>
+				<input type="text" ng-model="variety" name="variety" ng-change="varietyChange()"/>
 				<label>Harvest</label>
-					<select name="harvest" ng-model="harvest" form="newinterchangeform">
+					<select name="harvest" ng-model="harvest" form="newinterchangeform" >
 						<option ng-repeat="h in nic.harvestsByName" value="{{h['_links']['self']['href']}}">{{h['_links']['variety']['name']}}</option>
 					</select>
 
@@ -160,7 +161,7 @@
 	        <input auto-complete ui-items="names" ng-model="selected">
 	        selected = {{selected}}
 	    </div>
-
+		
 		<!--
 		<h3>Las variedades 2</h3>
 		<div ng-controller="Variety">
@@ -168,9 +169,6 @@
 				<p>Name: {{v.name}}. Link is <a ng-href="">{{v["_links"]["self"]["href"]}}</a></p>
 			</div>	
 		</div>		
-		-->
-		</div>
-
-		</div>
+		-->		
 	</body>
 </html>

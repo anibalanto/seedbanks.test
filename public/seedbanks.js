@@ -104,12 +104,6 @@
 			});
 	});
 	
-	sb.factory('Variety',
-			function($resource){
-				return $resource(':url', {url:'@url'}, {
-				});
-		});
-	
 	sb.controller('HarvestResourceCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
 		var ctrl = this;
 		this.queryResult = Harvest.get(null, function (response) { 
@@ -144,7 +138,7 @@
 		
 		var bank = this;
 		this.queryResult = Variety.get(null, function (response) { 
-			bank.varieties = response['_embedded']['variety'];			
+			bank.varieties = response['_embedded']['variety'];
 		});
 
 		var newHarvest = new Harvest();
