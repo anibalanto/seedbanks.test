@@ -173,24 +173,40 @@
 		
 		$scope.variety = "b";
 		
+
+		$scope.dd = {};		
+		$scope.init = function(id, urlFarmer, urlVariety)
+				{
+					$scope.dd[id] = {};
+					$http.get(urlFarmer).success(function(data){
+						//console.log(data.toSource());
+						$scope.dd[id].firstName = data['firstName'];
+						$scope.dd[id].surname = data['surname'];
+						$scope.dd[id].reliability = data['reliability'];
+					});
+					$http.get(urlVariety).success(function(data){
+						//console.log(data.toSource());
+						$scope.dd[id].varietyName = data['name'];
+					});
+				};
+
 		var ctrl2 = this
 		$scope.varietyChange = function() {
 			ctrl2.queryResult1 = HarvestByVarietyName.get({variety:$scope.variety}, function (response) {
 				ctrl2.harvestsByName = response['_embedded']['harvest'];
 				for(harvItem of ctrl2.harvestsByName){
 					variety = harvItem['_links']['variety'];
-					console.log("url: " + variety.toSource());
-					variety.name = "berenjena2";
+					//console.log("url: " + variety.toSource());
+					//variety.name = "berenjena2";
 					$http.get(variety['href']).success(function(data){
 						
-						name = data['name']
-						console.log("varietyName: " + name);
-						variety.name = name;
-						console.log("variety: " + variety.toSource());
-						console.log("harvestItem: " + harvItem.toSource());
+						//name = data['name']
+						//console.log("varietyName: " + name);
+						//console.log("variety: " + variety.toSource());
+						//console.log("harvestItem: " + harvItem.toSource());
 						
 					});
-					console.log("harvests: " + ctrl2.harvestsByName.toSource());
+					//console.log("harvests: " + ctrl2.harvestsByName.toSource());
 				}
 			});
 		}
@@ -213,6 +229,22 @@
 
 			newInter.$save();	
 		}
+	}]);
+
+
+	sb.controller('dataFarmerInterchangeCtrl', ['$http', '$scope', 'Interchange', 'HarvestByVarietyName', 'Variety', function($http, $scope, Interchange, HarvestByVarietyName, Variety) {
+
+		$scope.init = function(url)
+				{
+					console.log("init");
+					$http.get(url).success(function(data){
+						console.log(data.toSource());
+					});
+					
+				};
+		//console.log("en dataFarmer... : "+$scope.id);
+		//console.log("en dataFarmer... : "+$scope.name);
+		
 	}]);
 
 	sb.factory('Farmer',
