@@ -7,6 +7,8 @@
 		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 		<!-- Optional theme -->
 		<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/style.css">
+
 		<!--<link rel="styleSheet" href="ui-grid/release/ui-grid-unstable.css"/>-->
 
 		<!-- Latest compiled and minified JavaScript -->
@@ -27,83 +29,6 @@
 		<div class="starter-template">
 		<h1>Banco de Semillas</h1>
 		
-			<!--div ng-controller="Ctrl">
-				Buscar cosechas por ID de Farmer:
-				<form name="findHarvest" ng-submit="submit()">
-					<input type="text" ng-model="text" name="text">
-					<input type="submit" value="Buscar"><pre>list={{list}}</pre>	
-				</form>
-				<ul>
-					<li ng-repeat="item in list">({{item}})</li>
-				</ul>					
-				<button ng-click="submit()">sub</button>
-			</div-->
-		
-			<!-- CU 1. Harvest Repo: Find Harvest by Farmer ID -->
-	
-			<h3>Variedades</h3>
-			<div ng-controller="VarietyController as VCtrl">
-				<ul>
-					<li ng-repeat="variedad in VCtrl.variedades">
-						<a href="{{variedad._links['self']['href']}}">{{variedad._links.self}}</a>
-					</li>
-				</ul>
-			</div>
-
-		<h3>Variedades</h3>
-		<div ng-controller="VarietyController as VCtrl">
-			<ul>
-				<li ng-repeat="variedad in VCtrl.variedades">
-					<a href="{{variedad._links['self']['href']}}">{{variedad.name}}</a>
-				</li>
-			</ul>
-		</div>
-		
-		<!--
-		<h3>Consulta de Cosechas</h3>
-		<div ng-controller="FindHarvestCtrl as FHCtrl">
-			ID Variedad: <input type="text" ng-model="FHCtrl.idvariedad" ng-init="FHCtrl.idvariedad == 2">
-			<ul>
-				<li ng-repeat="h in FHCtrl.cosechas">
-					Name: {{h.harvestCodeValidator}}
-				</li>
-			</ul>
-		</div>
-		-->
-		
-		<h3>Consulta de Cosechas 2</h3>
-		<div ng-controller="FindHarvestCtrl2 as FHCtrl">
-			Posición: <input type="text" ng-model="FHCtrl.idvariedad">
-				<p ng-show="FHCtrl.idvariedad < FHCtrl.cosechas.length">Name: {{FHCtrl.cosechas[FHCtrl.idvariedad].harvestCodeValidator}}</p>
-		</div>
-
-		<h3>Consulta de Cosechas 3</h3>
-		<div ng-controller="FindHarvestCtrl2 as FHCtrl">
-			Harvest ID: <input type="text" ng-model="query">
-			<ul>
-				<li ng-repeat="cosecha in FHCtrl.cosechas | filter:'/harvest/'+query+'/farmer'">
-					Fecha: {{cosecha.date}} <br>
-					Code: {{cosecha.harvestCodeValidator}} <br>
-					Compartida: {{cosecha.shared}} <br>
-					Farmer: {{cosecha._links['farmer']['href']}}
-				</li>
-			</ul>
-		</div>
-
-
-
-		<!--
-		<h3>Cosechas</h3>
-		<div ng-controller="HarvestResCtrl as HCtrl">
-			<ul>
-				<li ng-repeat="h in HCtrl.harvests">
-					Name: {{h.date}}
-				</li>
-			</ul>
-		</div>
-		-->
-		
-		<h3> Harvest Resource </h3>
 		<div ng-controller="HarvestResourceCtrl as hrc">
 			<!--<div ui-grid="{ data: hrc.harvests }" class="myGrid"></div>-->
 		</div>
@@ -134,47 +59,36 @@
 		<div ng-controller="newInterchangeCtrl as nic">
 			<h3>Intercambiar semillas de cosecha</h3>
 			<form name="newInterchangeForm" ng-submit="submit()" id="newinterchangeform">
+				<label>Variety: </label>
 				<input type="text" ng-model="variety" name="variety" ng-change="varietyChange()"/>
-				<label>Harvest</label>
-					<select name="harvest" ng-model="harvest" form="newinterchangeform">
-						<option ng-repeat="h in nic.harvestsByName" value="{{h['_links']['self']['href']}}">{{h['_links']['variety']}}</option>
-					</select>
-					<ul>
-						<li ng-repeat="h in nic.harvestsByName" ng-init="init(h['_links']['self']['href'], h['_links']['farmer']['href'], h['_links']['variety']['href'])">
-
-							{{h['_links']['self']['href']}} {{dd[h['_links']['self']['href']].varietyName}}: {{dd[h['_links']['self']['href']].firstName}} {{dd[h['_links']['self']['href']].surname}} {{dd[h['_links']['self']['href']].reliability}} {{h['codeValidator']}} {{h['date']}}
-						</li>
-					</ul>
+				<br><label>Matching harvests: </label>
+					<table ng-hide="variety === ''" >
+						<th>Select</th>
+						<th>Harvest</th>
+						<th>Variety</th>
+						<th>Farmer</th>
+						<th>Farmer reliability</th>
+						<th>Code validator</th>
+						<th>Date</th>
+						<tr ng-repeat="h in nic.harvestsByName" ng-init="init(h['_links']['self']['href'], h['_links']['farmer']['href'], h['_links']['variety']['href'])">
+							<td><input type="radio" ng-model="$parent.harvest" value="{{h['_links']['self']['href']}}" form="newinterchangeform"></td>
+							<td>{{h['_links']['self']['href']}}</td>
+							<td>{{dd[h['_links']['self']['href']].varietyName}}</td>
+							<td>{{dd[h['_links']['self']['href']].surname}}, {{dd[h['_links']['self']['href']].firstName}}</td>
+							<td>{{dd[h['_links']['self']['href']].reliability}}</td>
+							<td>{{h['codeValidator']}}</td>
+							<td>{{h['date']}}</td>
+						</tr>
+					</table>
 
 					<br>
 				<label>Farmer receptor</label>
 					<input type="text" ng-model="farmerReceptor" name="farmerReceptor">
-				<!--
-				<select name="farmers" ng-controller="FarmerCtrl">
-					<option ng-repeat="f in FarmerCtrl.farmers" value="">{{f['_links']['self']['href']}}</option>
-				</select>
-				-->
-				<br>
-				
 				<label>Score</label><input type="text" ng-model="score" name="score"><br>
 				
 				<input type="submit" value="Intercambiar">
 			</form>
 		</div>
 
-
-	    <div ng-controller='DefaultCtrl'>
-	        <input auto-complete ui-items="names" ng-model="selected">
-	        selected = {{selected}}
-	    </div>
-		
-		<!--
-		<h3>Las variedades 2</h3>
-		<div ng-controller="Variety">
-			<div ng-repeat="v in varieties">
-				<p>Name: {{v.name}}. Link is <a ng-href="">{{v["_links"]["self"]["href"]}}</a></p>
-			</div>	
-		</div>		
-		-->		
 	</body>
 </html>

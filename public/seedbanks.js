@@ -171,9 +171,6 @@
 		
 		$scope.variety = "ber";
 		
-		$scope.variety = "b";
-		
-
 		$scope.dd = {};		
 		$scope.init = function(id, urlFarmer, urlVariety)
 				{
@@ -226,7 +223,6 @@
 			newInter.farmerReceptor = $scope.farmerReceptor;
 			newInter.harvest = $scope.harvest;
 			newInter.score = $scope.score;
-
 			newInter.$save();	
 		}
 	}]);
