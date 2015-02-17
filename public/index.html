@@ -133,11 +133,17 @@
 		<div ng-controller="newInterchangeCtrl as nic">
 			<h3>Intercambiar semillas de cosecha</h3>
 			<form name="newInterchangeForm" ng-submit="submit()" id="newinterchangeform">
-				<input type="text" ng-model="variety" name="variety"/>
+				<input type="text" ng-model="variety" name="variety" ng-change="varietyChange()"/>
 				<label>Harvest</label>
 					<select name="harvest" ng-model="harvest" form="newinterchangeform">
-						<option ng-repeat="h in nic.harvestsByName" value="{{h['_links']['self']['href']}}">{{h['_links']['variety']['name']}}</option>
+						<option ng-repeat="h in nic.harvestsByName" value="{{h['_links']['self']['href']}}">{{h['_links']['variety']}}</option>
 					</select>
+					<ul>
+						<li ng-repeat="h in nic.harvestsByName" ng-init="init(h['_links']['self']['href'], h['_links']['farmer']['href'], h['_links']['variety']['href'])">
+
+							{{h['_links']['self']['href']}} {{dd[h['_links']['self']['href']].varietyName}}: {{dd[h['_links']['self']['href']].firstName}} {{dd[h['_links']['self']['href']].surname}} {{dd[h['_links']['self']['href']].reliability}} {{h['codeValidator']}} {{h['date']}}
+						</li>
+					</ul>
 
 					<br>
 				<label>Farmer receptor</label>
