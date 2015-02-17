@@ -3,20 +3,6 @@
 	
 	var sb = angular.module('sb', ['ngResource']);
 	
-	sb.directive('autoComplete', function($timeout) {
-	    return function(scope, iElement, iAttrs) {
-	    	//console.log(iElement.toSource());
-            iElement.autocomplete({
-                source: scope[iAttrs.uiItems],
-                select: function() {
-                    $timeout(function() {
-                      iElement.trigger('input');
-                    }, 0);
-                }
-            });
-	    };
-	});
-	
 	/*sb.config(function (HateoasInterceptorProvider) {
 	    HateoasInterceptorProvider.transformAllResponses();
 	});*/
@@ -94,8 +80,21 @@
 				return $resource('harvest/search/:verb', {verb:'findBySharedAndVarietyNameContainingIgnoringCase', variety:'@variety', shared:'1'}, {
 				});
 	});
+
+	sb.controller('HarvestByVarietyNameResource', ['$scope', 'HarvestByVarietyName', function($scope, HarvestByVarietyName) {
+		var ctrl1 = this;
+		ctrl1.queryResult1 = HarvestByVarietyName.get({variety:'beren'}, function (response) {
+			ctrl1.harvestsByName = response['_embedded']['harvest'];
+			//console.log(ctrl1.harvestsByName.toSource());
+		});
+	}]);
 	
-	
+	sb.factory('Variety',
+		function($resource){
+			return $resource('variety/:id', {id:'@id'}, {
+			});
+	});
+
 	sb.factory('Harvest',
 		function($resource){
 
@@ -141,18 +140,12 @@
 	}]);
 	
 
-	
-	
-	
-	/*sb.controller('HarvestByVarietyNameResource2',  ['$scope', 'HarvestByVarieytName', function($scope, HarvestByVarieytName) {
-		var newHarvest = new HarvestByVarieytName({variety: 'beren'});
-		console(newHarv)
-	}]);*/
-
-
-	sb.controller('newHarvestCtrl', ['$scope', 'Harvest', function($scope, Harvest) {
+	sb.controller('newHarvestCtrl', ['$scope', 'Harvest', 'Variety', function($scope, Harvest, Variety) {
 		
-		
+		var bank = this;
+		this.queryResult = Variety.get(null, function (response) { 
+			bank.varieties = response['_embedded']['variety'];			
+		});
 
 		var newHarvest = new Harvest();
 		$scope.farmer = 'farmer/FFAAEE44';
@@ -184,6 +177,7 @@
 		
 		$scope.variety = "ber";
 		
+		$scope.variety = "b";
 		
 		var ctrl2 = this
 		$scope.varietyChange = function() {
@@ -222,10 +216,8 @@
 			newInter.farmerReceptor = $scope.farmerReceptor;
 			newInter.harvest = $scope.harvest;
 			newInter.score = $scope.score;
-			console.log(newInter.toSource());
-			console.log("$scope.harvest:" + $scope.harvest.toSource());
 
-			newInter.$save();
+			newInter.$save();	
 		}
 	}]);
 
