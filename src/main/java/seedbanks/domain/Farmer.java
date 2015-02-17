@@ -2,6 +2,7 @@ package seedbanks.domain;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -19,6 +20,39 @@ public class Farmer {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "farmerReceptor")
 	private Set<Interchange> inchangesReceived;
+	
+	@Column
+	private String firstName;
+	
+	@Column
+	private String surname;
+	
+	@Column
+	private float reliability;
+	
+	public float getReliability() {
+		return reliability;
+	}
+
+	public void setReliability(float reliability) {
+		this.reliability = reliability;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
 
 	public String getuFarmerID() {
 		return uFarmerID;
